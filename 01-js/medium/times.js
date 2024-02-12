@@ -9,5 +9,11 @@ There is no automated test for this one, this is more for you to understand time
 */
 
 function calculateTime(n) {
-    return 0.01;
+    return [...Array(n).keys()].map( i => i+1).reduce((sum, i)=>sum+i, Number.MIN_VALUE);;
 }
+
+const startTime = new Date();
+console.log(calculateTime(10000));
+const endTime = new Date();
+
+console.log('Time Taken: ', endTime.getTime()-startTime.getTime());

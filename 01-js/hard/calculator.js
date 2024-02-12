@@ -16,6 +16,80 @@
   Once you've implemented the logic, test your code by running
 */
 
-class Calculator {}
+class Calculator {
+  constructor(result) {
+    this.result = result;
+  }
 
-module.exports = Calculator;
+  add(num) {
+    this.result += num;
+  }
+
+  subtract(num) {
+    this.result -= num;
+  }
+
+  multiply(num) {
+    this.result *= num;
+  }
+
+  divide(num) {
+    if (num === 0) {
+      throw new Error("Division by zero is not allowed!");
+    }
+    this.result /= num;
+  }
+
+  clear() {
+    this.result = 0;
+  }
+
+  getResult() {
+    return this.result;
+  }
+
+  calculate(expression) {
+    // improve the logic by solving the infix expression
+    
+    const tokens = expression.trim().split(/[^A-Za-z0-9*+-/()]*/);
+
+    const stack = [];
+
+    for (let i = 0; i < tokens.length; i++) {
+      const token = tokens[i];
+      console.log(token);
+      if (token === "(") {
+        stack.push(this.result);
+        this.result = 0;
+      } else if (token === ")") {
+        const valueInsideParentheses = this.result;
+        this.result = stack.pop();
+        this.add(valueInsideParentheses);
+      } else if (token === "+") {
+        this.add(parseFloat(token));
+        i++;
+      } else if (token === "-") {
+        this.subtract(parseFloat(tokens[i + 1]));
+        i++;
+      } else if (token === "*") {
+        this.multiply(parseFloat(tokens[i + 1]));
+        i++;
+      } else if (token === "/") {
+        this.divide(parseFloat(tokens[i + 1]));
+        i++;
+      } else {
+        // throw new Error(
+        //   "Invalid input: Expression contains invalid characters"
+        // );
+        console.log('invalid');
+        break;
+      }
+      // console.log(this.result);
+    }
+  }
+}
+
+const calc = new Calculator();
+calc.calculate('10 + 2 * (6 - (4 + 1) / 2) + 7');
+console.log(calc.getResult()); // Output should be 21
+// module.exports = Calculator;
